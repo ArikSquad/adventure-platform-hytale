@@ -7,7 +7,7 @@ plugins {
     id("net.kyori.indra.checkstyle") version "4.0.0"
 }
 
-group = "net.kyori"
+group = "eu.mikart"
 version = "1.0.0-SNAPSHOT"
 description = "Adventure platform implementation for Hytale"
 

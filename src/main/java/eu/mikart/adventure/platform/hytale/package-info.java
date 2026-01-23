@@ -26,4 +26,4 @@
  *
  * @since 1.0.0
  */
-package net.kyori.adventure.platform.hytale;
+package eu.mikart.adventure.platform.hytale;
