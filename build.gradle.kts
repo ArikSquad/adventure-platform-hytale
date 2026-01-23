@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "net.kyori"
-version = "1.0.5-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 description = "Adventure platform implementation for Hytale"
 
 val adventure = "4.21.0"
