@@ -20,10 +20,10 @@ repositories {
 }
 
 dependencies {
-    implementation("net.kyori:adventure-platform-api:4.4.2-SNAPSHOT")
+    api("net.kyori:adventure-platform-api:4.4.2-SNAPSHOT")
     api("net.kyori:adventure-text-serializer-gson:${adventure}")
     api("net.kyori:adventure-text-serializer-ansi:${adventure}")
-    implementation("net.kyori:adventure-platform-facet:4.4.2-SNAPSHOT")
+    api("net.kyori:adventure-platform-facet:4.4.2-SNAPSHOT")
     compileOnly("com.hypixel.hytale:Server:2026.01.23-d5ecebca9")
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
 }
