@@ -5,7 +5,6 @@ plugins {
     id("net.kyori.indra") version "4.0.0"
     id("net.kyori.indra.licenser.spotless") version "4.0.0"
     id("net.kyori.indra.checkstyle") version "4.0.0"
-    id("net.kyori.indra.crossdoc") version "4.0.0"
 }
 
 group = "net.kyori"
