@@ -29,6 +29,14 @@ dependencies {
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
 indra {
     javaVersions {
         testWith(8, 11, 17)
