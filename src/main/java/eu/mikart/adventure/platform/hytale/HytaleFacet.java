@@ -33,6 +33,7 @@ import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
+import java.util.Locale;
 import java.util.UUID;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.permission.PermissionChecker;
@@ -64,7 +65,7 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     return store.getComponent(ref, PlayerRef.getComponentType());
   }
 
-  static class ChatConsole extends HytaleFacet<CommandSender> implements Facet.Chat<CommandSender, String> {
+  static class ChatConsole extends HytaleFacet<CommandSender> implements Facet.Chat<CommandSender, com.hypixel.hytale.server.core.Message> {
     protected ChatConsole() {
       super(CommandSender.class);
     }
@@ -75,47 +76,47 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     }
 
     @Override
-    public String createMessage(final @NotNull CommandSender viewer, final @NotNull Component message) {
+    public com.hypixel.hytale.server.core.Message createMessage(final @NotNull CommandSender viewer, final @NotNull Component message) {
       return HYTALE.serialize(message);
     }
 
     @Override
-    public void sendMessage(final @NotNull CommandSender viewer, final @NotNull Identity source, final @NotNull String message, final @NotNull Object type) {
-      viewer.sendMessage(com.hypixel.hytale.server.core.Message.parse(message));
+    public void sendMessage(final @NotNull CommandSender viewer, final @NotNull Identity source, final @NotNull com.hypixel.hytale.server.core.Message message, final @NotNull Object type) {
+      viewer.sendMessage(message);
     }
   }
 
-  static class Message extends HytaleFacet<Player> implements Facet.Message<Player, String> {
+  static class Message extends HytaleFacet<Player> implements Facet.Message<Player, com.hypixel.hytale.server.core.Message> {
     protected Message() {
       super(Player.class);
     }
 
     @Override
-    public String createMessage(final @NotNull Player viewer, final @NotNull Component message) {
+    public com.hypixel.hytale.server.core.Message createMessage(final @NotNull Player viewer, final @NotNull Component message) {
       return HYTALE.serialize(message);
     }
   }
 
-  static class ChatPlayer extends Message implements Facet.Chat<Player, String> {
+  static class ChatPlayer extends Message implements Facet.Chat<Player, com.hypixel.hytale.server.core.Message> {
     @Override
-    public void sendMessage(final @NotNull Player viewer, final @NotNull Identity source, final @NotNull String message, final @NotNull Object type) {
-      viewer.sendMessage(com.hypixel.hytale.server.core.Message.parse(message));
+    public void sendMessage(final @NotNull Player viewer, final @NotNull Identity source, final @NotNull com.hypixel.hytale.server.core.Message message, final @NotNull Object type) {
+      viewer.sendMessage(message);
     }
   }
 
-  static class Title extends Message implements Facet.Title<Player, String, Title.TitleData, Title.TitleData> {
+  static class Title extends Message implements Facet.Title<Player, com.hypixel.hytale.server.core.Message, Title.TitleData, Title.TitleData> {
     @Override
     public @NotNull TitleData createTitleCollection() {
       return new TitleData();
     }
 
     @Override
-    public void contributeTitle(final @NotNull TitleData coll, final @NotNull String title) {
+    public void contributeTitle(final @NotNull TitleData coll, final @NotNull com.hypixel.hytale.server.core.Message title) {
       coll.title = title;
     }
 
     @Override
-    public void contributeSubtitle(final @NotNull TitleData coll, final @NotNull String subtitle) {
+    public void contributeSubtitle(final @NotNull TitleData coll, final @NotNull com.hypixel.hytale.server.core.Message subtitle) {
       coll.subtitle = subtitle;
     }
 
@@ -134,7 +135,7 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
 
     @Override
     public void showTitle(final @NotNull Player viewer, final @NotNull TitleData title) {
-      EventTitleUtil.showEventTitleToPlayer(HytaleFacet.toPlayerRef(viewer), com.hypixel.hytale.server.core.Message.parse(title.title), com.hypixel.hytale.server.core.Message.parse(title.subtitle), title.isMajor, title.icon, title.stay, title.fadeIn, title.fadeOut);
+      EventTitleUtil.showEventTitleToPlayer(HytaleFacet.toPlayerRef(viewer), title.title, title.subtitle, title.isMajor, title.icon, title.stay, title.fadeIn, title.fadeOut);
     }
 
     @Override
@@ -148,8 +149,8 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     }
 
     static class TitleData {
-      String title = "";
-      String subtitle = "";
+      com.hypixel.hytale.server.core.Message title = com.hypixel.hytale.server.core.Message.raw("");
+      com.hypixel.hytale.server.core.Message subtitle = com.hypixel.hytale.server.core.Message.raw("");
       String icon = null;
       boolean isMajor = false;
       float stay = 4.0f;
@@ -196,6 +197,11 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
 
       builder.withDynamic(Identity.UUID, uuid::getUuid);
       builder.withDynamic(Identity.NAME, () -> String.valueOf(viewer.getDisplayName()));
+      builder.withDynamic(Identity.LOCALE, () -> {
+        final PlayerRef playerRef = HytaleFacet.toPlayerRef(viewer);
+        final String locale = playerRef.getLanguage();
+        return Locale.forLanguageTag(locale);
+      });
       builder.withStatic(FacetPointers.TYPE, FacetPointers.Type.PLAYER);
       builder.withStatic(PermissionChecker.POINTER, perm -> viewer.hasPermission(perm) ? TriState.TRUE : TriState.FALSE);
     }

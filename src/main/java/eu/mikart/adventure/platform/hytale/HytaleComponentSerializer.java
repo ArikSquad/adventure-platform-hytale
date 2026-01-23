@@ -54,7 +54,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0.0
  */
 @SuppressWarnings("UnstableApiUsage")
-public final class HytaleComponentSerializer implements ComponentSerializer<Component, Component, String> {
+public final class HytaleComponentSerializer implements ComponentSerializer<Component, Component, Message> {
   private static final Gson GSON = new GsonBuilder().serializeNulls().create();
   private static final HytaleComponentSerializer INSTANCE = new HytaleComponentSerializer();
   private static final ComponentFlattener FLATTENER = FacetComponentFlattener.get(HytaleServer.get(), Collections.singletonList(new HytaleFacet.Translator()));
@@ -79,7 +79,6 @@ public final class HytaleComponentSerializer implements ComponentSerializer<Comp
    * @return a component
    * @since 1.0.0
    */
-  @Override
   public @NotNull Component deserialize(final @NotNull String input) {
     final JsonObject json = GSON.fromJson(input, JsonObject.class);
     return this.deserializeElement(json, Style.empty());
@@ -92,6 +91,7 @@ public final class HytaleComponentSerializer implements ComponentSerializer<Comp
    * @return a component
    * @since 1.0.0
    */
+  @Override
   public @NotNull Component deserialize(final @NotNull Message message) {
     return this.deserialize(Message.CODEC.encode(message, EmptyExtraInfo.EMPTY).toString());
   }
@@ -140,10 +140,10 @@ public final class HytaleComponentSerializer implements ComponentSerializer<Comp
   }
 
   @Override
-  public @NotNull String serialize(final @NotNull Component component) {
+  public @NotNull Message serialize(final @NotNull Component component) {
     final SerializerListener listener = new SerializerListener();
     FLATTENER.flatten(component, listener);
-    return GSON.toJson(listener.result());
+    return Message.parse(GSON.toJson(listener.result()));
   }
 
   private static final class SerializerListener implements FlattenerListener {
