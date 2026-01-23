@@ -34,6 +34,7 @@ import com.hypixel.hytale.codec.EmptyExtraInfo;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import net.kyori.adventure.platform.facet.FacetComponentFlattener;
 import net.kyori.adventure.text.Component;
@@ -56,7 +57,7 @@ import org.jetbrains.annotations.NotNull;
 public final class HytaleComponentSerializer implements ComponentSerializer<Component, Component, String> {
   private static final Gson GSON = new GsonBuilder().serializeNulls().create();
   private static final HytaleComponentSerializer INSTANCE = new HytaleComponentSerializer();
-  private static final ComponentFlattener FLATTENER = FacetComponentFlattener.get(HytaleServer.get(), null);
+  private static final ComponentFlattener FLATTENER = FacetComponentFlattener.get(HytaleServer.get(), Collections.singletonList(new HytaleFacet.Translator()));
 
   private HytaleComponentSerializer() {
   }

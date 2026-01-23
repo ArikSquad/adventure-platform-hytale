@@ -29,6 +29,7 @@ import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
@@ -197,6 +198,18 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
       builder.withDynamic(Identity.NAME, () -> String.valueOf(viewer.getDisplayName()));
       builder.withStatic(FacetPointers.TYPE, FacetPointers.Type.PLAYER);
       builder.withStatic(PermissionChecker.POINTER, perm -> viewer.hasPermission(perm) ? TriState.TRUE : TriState.FALSE);
+    }
+  }
+
+  static class Translator extends FacetBase<HytaleServer> implements FacetComponentFlattener.Translator<HytaleServer> {
+    Translator() {
+      super(HytaleServer.class);
+    }
+
+    @Override
+    public @NotNull String valueOrDefault(final @NotNull HytaleServer game, final @NotNull String key) {
+      final String value = I18nModule.get().getMessage(I18nModule.DEFAULT_LANGUAGE, key);
+      return value != null ? value : key;
     }
   }
 }
