@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.ArikSquad:adventure-platform-hytale:1.0.0-SNAPSHOT'
+    implementation 'com.github.ArikSquad:adventure-platform-hytale:1.0.0'
 }
 ```
 
