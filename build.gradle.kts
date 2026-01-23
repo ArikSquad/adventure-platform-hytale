@@ -46,3 +46,10 @@ indra {
     github("ArikSquad", "adventure-platform-hytale")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+}
