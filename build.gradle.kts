@@ -56,18 +56,16 @@ publishing {
     }
 
     repositories {
-        val mavenUrl: String? by project
-        val mavenSnapshotUrl: String? by project
+        maven("https://repo.codemc.io/repository/ArikSquad/") {
+            val mavenUsername = System.getenv("JENKINS_USERNAME")
+                ?: findProperty("mavenUsername") as String?
+            val mavenPassword = System.getenv("JENKINS_PASSWORD")
+                ?: findProperty("mavenPassword") as String?
 
-        (if (version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
-            maven(url) {
-                val mavenUsername: String? by project
-                val mavenPassword: String? by project
-                if (mavenUsername != null && mavenPassword != null) {
-                    credentials {
-                        username = mavenUsername
-                        password = mavenPassword
-                    }
+            if (mavenUsername != null && mavenPassword != null) {
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
                 }
             }
         }
