@@ -36,11 +36,12 @@ java {
 
 indra {
     javaVersions {
-        testWith(8, 11, 17)
+        target(21)
+        minimumToolchain(21)
+        testWith(21)
     }
 
     mitLicense()
-
     github("ArikSquad", "adventure-platform-hytale")
 }
 
