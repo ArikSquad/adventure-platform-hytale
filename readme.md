@@ -11,11 +11,11 @@ To use `adventure-platform-hytale`, include it as a dependency in your project. 
 
 ```gradle
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
 }
 
 dependencies {
-    implementation 'com.github.ArikSquad:adventure-platform-hytale:1.0.0'
+    implementation 'eu.mikart.adventure:adventure-platform-hytale:1.0.2'
 }
 ```
 

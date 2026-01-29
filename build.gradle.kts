@@ -57,7 +57,14 @@ publishing {
     }
 
     repositories {
-        maven("https://repo.codemc.io/repository/ArikSquad/") {
+        val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
+        val repoUrl = if (isSnapshot) {
+            "https://repo.codemc.io/repository/maven-snapshots/"
+        } else {
+            "https://repo.codemc.io/repository/maven-releases/"
+        }
+
+        maven(repoUrl) {
             val mavenUsername = System.getenv("JENKINS_USERNAME")
                 ?: findProperty("mavenUsername") as String?
             val mavenPassword = System.getenv("JENKINS_PASSWORD")
