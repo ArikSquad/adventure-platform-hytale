@@ -11,7 +11,7 @@ To use `adventure-platform-hytale`, include it as a dependency in your project. 
 
 ```gradle
 repositories {
-    maven { url 'https://repo.codemc.io/repository/maven-releases/' }
+    maven { url 'https://repo.codemc.io/repository/ArikSquad/' }
 }
 
 dependencies {

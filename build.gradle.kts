@@ -59,9 +59,9 @@ publishing {
     repositories {
         val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
         val repoUrl = if (isSnapshot) {
-            "https://repo.codemc.io/repository/maven-snapshots/"
+            "https://repo.codemc.io/repository/ArikSquad/"
         } else {
-            "https://repo.codemc.io/repository/maven-releases/"
+            "https://repo.codemc.io/repository/ArikSquad/"
         }
 
         maven(repoUrl) {
