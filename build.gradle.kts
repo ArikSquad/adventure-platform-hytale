@@ -8,10 +8,8 @@ plugins {
 }
 
 group = "eu.mikart.adventure"
-version = "1.0.0"
+version = "1.0.2"
 description = "Adventure platform implementation for Hytale"
-
-val adventure = "4.21.0"
 
 repositories {
     mavenCentral()
@@ -21,8 +19,8 @@ repositories {
 
 dependencies {
     api("net.kyori:adventure-platform-api:4.4.2-SNAPSHOT")
-    api("net.kyori:adventure-text-serializer-gson:${adventure}")
-    api("net.kyori:adventure-text-serializer-ansi:${adventure}")
+    api("net.kyori:adventure-text-serializer-gson:4.21.0")
+    api("net.kyori:adventure-text-serializer-ansi:4.21.0")
     api("net.kyori:adventure-platform-facet:4.4.2-SNAPSHOT")
     compileOnly("com.hypixel.hytale:Server:2026.01.23-d5ecebca9")
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
@@ -48,8 +46,30 @@ indra {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mavenJava") {
+            groupId = project.group.toString()
+            artifactId = "adventure-platform-hytale"
+            version = project.version.toString()
+
             from(components["java"])
+        }
+    }
+
+    repositories {
+        val mavenUrl: String? by project
+        val mavenSnapshotUrl: String? by project
+
+        (if (version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
+            maven(url) {
+                val mavenUsername: String? by project
+                val mavenPassword: String? by project
+                if (mavenUsername != null && mavenPassword != null) {
+                    credentials {
+                        username = mavenUsername
+                        password = mavenPassword
+                    }
+                }
+            }
         }
     }
 }
