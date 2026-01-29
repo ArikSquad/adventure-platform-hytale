@@ -13,7 +13,7 @@ description = "Adventure platform implementation for Hytale"
 
 repositories {
     mavenCentral()
-    maven("https://maven.hytale.com/pre-release")
+    maven("https://maven.hytale.com/release")
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
@@ -22,7 +22,7 @@ dependencies {
     api("net.kyori:adventure-text-serializer-gson:4.21.0")
     api("net.kyori:adventure-text-serializer-ansi:4.21.0")
     api("net.kyori:adventure-platform-facet:4.4.2-SNAPSHOT")
-    compileOnly("com.hypixel.hytale:Server:2026.01.23-d5ecebca9")
+    compileOnly("com.hypixel.hytale:Server:2026.01.28-87d03be09")
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
 }
 
