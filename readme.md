@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'eu.mikart.adventure:adventure-platform-hytale:1.0.3'
+    implementation 'eu.mikart.adventure:adventure-platform-hytale:1.0.4'
 }
 ```
 

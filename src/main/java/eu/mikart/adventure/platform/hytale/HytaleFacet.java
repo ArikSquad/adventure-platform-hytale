@@ -59,7 +59,7 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
   private static PlayerRef toPlayerRef(final Player player) {
     final Ref<EntityStore> ref = player.getReference();
     if (ref == null) {
-      throw new IllegalStateException("Player " + player.getDisplayName() + " has no reference");
+      throw new IllegalStateException("Player " + player + " has no reference");
     }
     final Store<EntityStore> store = ref.getStore();
     return store.getComponent(ref, PlayerRef.getComponentType());
@@ -86,25 +86,25 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     }
   }
 
-  static class Message extends HytaleFacet<Player> implements Facet.Message<Player, com.hypixel.hytale.server.core.Message> {
+  static class Message extends HytaleFacet<PlayerRef> implements Facet.Message<PlayerRef, com.hypixel.hytale.server.core.Message> {
     protected Message() {
-      super(Player.class);
+      super(PlayerRef.class);
     }
 
     @Override
-    public com.hypixel.hytale.server.core.Message createMessage(final @NotNull Player viewer, final @NotNull Component message) {
+    public com.hypixel.hytale.server.core.Message createMessage(final @NotNull PlayerRef viewer, final @NotNull Component message) {
       return HYTALE.serialize(message);
     }
   }
 
-  static class ChatPlayer extends Message implements Facet.Chat<Player, com.hypixel.hytale.server.core.Message> {
+  static class ChatPlayer extends Message implements Facet.Chat<PlayerRef, com.hypixel.hytale.server.core.Message> {
     @Override
-    public void sendMessage(final @NotNull Player viewer, final @NotNull Identity source, final @NotNull com.hypixel.hytale.server.core.Message message, final @NotNull Object type) {
+    public void sendMessage(final @NotNull PlayerRef viewer, final @NotNull Identity source, final @NotNull com.hypixel.hytale.server.core.Message message, final @NotNull Object type) {
       viewer.sendMessage(message);
     }
   }
 
-  static class Title extends Message implements Facet.Title<Player, com.hypixel.hytale.server.core.Message, Title.TitleData, Title.TitleData> {
+  static class Title extends Message implements Facet.Title<PlayerRef, com.hypixel.hytale.server.core.Message, Title.TitleData, Title.TitleData> {
     @Override
     public @NotNull TitleData createTitleCollection() {
       return new TitleData();
@@ -134,18 +134,18 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     }
 
     @Override
-    public void showTitle(final @NotNull Player viewer, final @NotNull TitleData title) {
-      EventTitleUtil.showEventTitleToPlayer(HytaleFacet.toPlayerRef(viewer), title.title, title.subtitle, title.isMajor, title.icon, title.stay, title.fadeIn, title.fadeOut);
+    public void showTitle(final @NotNull PlayerRef viewer, final @NotNull TitleData title) {
+      EventTitleUtil.showEventTitleToPlayer(viewer, title.title, title.subtitle, title.isMajor, title.icon, title.stay, title.fadeIn, title.fadeOut);
     }
 
     @Override
-    public void clearTitle(final @NotNull Player viewer) {
-      EventTitleUtil.hideEventTitleFromPlayer(HytaleFacet.toPlayerRef(viewer), 0);
+    public void clearTitle(final @NotNull PlayerRef viewer) {
+      EventTitleUtil.hideEventTitleFromPlayer(viewer, 0);
     }
 
     @Override
-    public void resetTitle(final @NotNull Player viewer) {
-      EventTitleUtil.hideEventTitleFromPlayer(HytaleFacet.toPlayerRef(viewer), 0);
+    public void resetTitle(final @NotNull PlayerRef viewer) {
+      EventTitleUtil.hideEventTitleFromPlayer(viewer, 0);
     }
 
     static class TitleData {
@@ -166,7 +166,7 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
 
     @Override
     public void contributePointers(final CommandSender viewer, final net.kyori.adventure.pointer.Pointers.Builder builder) {
-      builder.withDynamic(Identity.NAME, viewer::getDisplayName);
+      builder.withDynamic(Identity.NAME, viewer::getUsername);
       builder.withStatic(PermissionChecker.POINTER, perm -> viewer.hasPermission(perm) ? TriState.TRUE : TriState.FALSE);
       if (!(viewer instanceof Player)) {
         final UUID uuid = viewer.getUuid();
@@ -177,33 +177,39 @@ class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
     }
   }
 
-  static final class PlayerPointers extends HytaleFacet<Player> implements Facet.Pointers<Player> {
+  static final class PlayerPointers extends HytaleFacet<PlayerRef> implements Facet.Pointers<PlayerRef> {
     PlayerPointers() {
-      super(Player.class);
+      super(PlayerRef.class);
     }
 
     @Override
-    public void contributePointers(final Player viewer, final net.kyori.adventure.pointer.Pointers.Builder builder) {
+    public void contributePointers(final PlayerRef viewer, final net.kyori.adventure.pointer.Pointers.Builder builder) {
       final Ref<EntityStore> ref = viewer.getReference();
+
       if (ref == null) {
-        throw new IllegalStateException("Player " + viewer.getDisplayName() + " has no reference");
+        throw new IllegalStateException("Player " + viewer + " has no reference");
       }
 
       final Store<EntityStore> store = ref.getStore();
       final UUIDComponent uuid = store.getComponent(ref, UUIDComponent.getComponentType());
+      final PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+      if (playerRef == null) {
+        throw new IllegalStateException("Player " + viewer + " has no PlayerRef component");
+      }
+
       if (uuid == null) {
-        throw new IllegalStateException("Player " + viewer.getDisplayName() + " has no UUID component");
+        throw new IllegalStateException("Player " + playerRef.getUsername() + " has no UUID component");
       }
 
       builder.withDynamic(Identity.UUID, uuid::getUuid);
-      builder.withDynamic(Identity.NAME, () -> String.valueOf(viewer.getDisplayName()));
+      builder.withDynamic(Identity.NAME, playerRef::getUsername);
       builder.withDynamic(Identity.LOCALE, () -> {
-        final PlayerRef playerRef = HytaleFacet.toPlayerRef(viewer);
         final String locale = playerRef.getLanguage();
         return Locale.forLanguageTag(locale);
       });
       builder.withStatic(FacetPointers.TYPE, FacetPointers.Type.PLAYER);
-      builder.withStatic(PermissionChecker.POINTER, perm -> viewer.hasPermission(perm) ? TriState.TRUE : TriState.FALSE);
+      builder.withStatic(PermissionChecker.POINTER, perm -> playerRef.hasPermission(perm) ? TriState.TRUE : TriState.FALSE);
     }
   }
 

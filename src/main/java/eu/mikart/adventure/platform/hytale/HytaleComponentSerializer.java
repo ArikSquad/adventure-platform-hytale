@@ -227,9 +227,9 @@ public final class HytaleComponentSerializer implements ComponentSerializer<Comp
       json.add("Color", JsonNull.INSTANCE);
     }
 
-    final ClickEvent clickEvent = style.clickEvent();
+    final ClickEvent<?> clickEvent = style.clickEvent();
     if (clickEvent != null && clickEvent.action() == ClickEvent.Action.OPEN_URL) {
-      json.addProperty("Link", clickEvent.value());
+      json.addProperty("Link", ((ClickEvent.Payload.Text) clickEvent.payload()).value());
     } else {
       json.add("Link", JsonNull.INSTANCE);
     }

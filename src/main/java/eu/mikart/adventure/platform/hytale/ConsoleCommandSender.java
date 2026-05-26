@@ -41,7 +41,7 @@ public class ConsoleCommandSender implements CommandSender {
   private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
   @Override
-  public String getDisplayName() {
+  public String getUsername() {
     return "Adventure";
   }
 

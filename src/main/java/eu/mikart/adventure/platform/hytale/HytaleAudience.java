@@ -24,7 +24,7 @@
 package eu.mikart.adventure.platform.hytale;
 
 import com.hypixel.hytale.server.core.command.system.CommandSender;
-import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Collection;
 import net.kyori.adventure.platform.facet.Facet;
 import net.kyori.adventure.platform.facet.FacetAudience;
@@ -35,7 +35,7 @@ final class HytaleAudience extends FacetAudience<CommandSender> {
   private static final Collection<Facet.Chat<? extends CommandSender, ?>> CHAT = Facet.of(
       HytaleFacet.ChatPlayer::new,
       HytaleFacet.ChatConsole::new);
-  private static final Collection<Facet.Title<Player, ?, ?, ?>> TITLE = Facet.of(
+  private static final Collection<Facet.Title<PlayerRef, ?, ?, ?>> TITLE = Facet.of(
       HytaleFacet.Title::new);
   private static final Collection<Facet.Pointers<? extends CommandSender>> POINTERS = Facet.of(
       HytaleFacet.CommandSenderPointers::new,

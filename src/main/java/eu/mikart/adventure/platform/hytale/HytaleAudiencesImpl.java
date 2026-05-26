@@ -113,18 +113,18 @@ final class HytaleAudiencesImpl extends FacetAudienceProvider<CommandSender, Hyt
         if (player == null) {
           throw new IllegalArgumentException("player cannot be null");
         }
-        this.addViewer(player);
+        this.addViewer(playerRef);
       }
     });
 
     plugin.getEventRegistry().registerGlobal(PlayerReadyEvent.class, event -> {
-      final Ref<EntityStore> playerRef = event.getPlayerRef();
-      final Store<EntityStore> store = playerRef.getStore();
-      final Player player = store.getComponent(playerRef, Player.getComponentType());
-      if (player == null) {
+      final Ref<EntityStore> ref = event.getPlayerRef();
+      final Store<EntityStore> store = ref.getStore();
+      final PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+      if (playerRef == null) {
         throw new IllegalArgumentException("player cannot be null");
       }
-      this.addViewer(player);
+      this.addViewer(playerRef);
     });
   }
 
