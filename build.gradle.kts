@@ -27,7 +27,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
     withSourcesJar()
     withJavadocJar()
@@ -35,9 +35,9 @@ java {
 
 indra {
     javaVersions {
-        target(21)
-        minimumToolchain(21)
-        testWith(21)
+        target(25)
+        minimumToolchain(25)
+        testWith(25)
     }
 
     mitLicense()
