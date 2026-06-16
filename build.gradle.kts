@@ -21,7 +21,7 @@ dependencies {
     api("net.kyori:adventure-text-serializer-gson:5.1.1")
     api("net.kyori:adventure-text-serializer-ansi:5.1.1")
     api("net.kyori:adventure-platform-facet:4.4.1")
-    compileOnly("com.hypixel.hytale:Server:0.5.1")
+    compileOnly("com.hypixel.hytale:Server:0.5.5")
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
 }
 
