@@ -33,10 +33,10 @@ import com.google.gson.JsonPrimitive;
 import com.hypixel.hytale.codec.EmptyExtraInfo;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
+import eu.mikart.adventure.platform.hytale.facet.FacetComponentFlattener;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
-import net.kyori.adventure.platform.facet.FacetComponentFlattener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -53,7 +53,6 @@ import org.jetbrains.annotations.NotNull;
  *
  * @since 1.0.0
  */
-@SuppressWarnings("UnstableApiUsage")
 public final class HytaleComponentSerializer implements ComponentSerializer<Component, Component, Message> {
   private static final Gson GSON = new GsonBuilder().serializeNulls().create();
   private static final HytaleComponentSerializer INSTANCE = new HytaleComponentSerializer();
@@ -227,7 +226,7 @@ public final class HytaleComponentSerializer implements ComponentSerializer<Comp
       json.add("Color", JsonNull.INSTANCE);
     }
 
-    final ClickEvent clickEvent = style.clickEvent();
+    final ClickEvent<?> clickEvent = style.clickEvent();
     if (clickEvent != null && clickEvent.action() == ClickEvent.Action.OPEN_URL) {
       json.addProperty("Link", ((ClickEvent.Payload.Text) clickEvent.payload()).value());
     } else {

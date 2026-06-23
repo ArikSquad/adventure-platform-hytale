@@ -1,6 +1,7 @@
 /*
  * This file is part of adventure-platform-hytale, licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 KyoriPowered
  * Copyright (c) 2026 ArikSquad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package eu.mikart.adventure.platform.hytale;
+/**
+ * Common implementation details shared between platforms.
+ *
+ * <p>This is not supported API. Subject to change at any time.</p>
+ */
+@ApiStatus.Internal
+package eu.mikart.adventure.platform.hytale.facet;
 
-import com.hypixel.hytale.server.core.command.system.CommandSender;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
-import eu.mikart.adventure.platform.hytale.facet.Facet;
-import eu.mikart.adventure.platform.hytale.facet.FacetAudience;
-import java.util.Collection;
-import org.jetbrains.annotations.NotNull;
-
-final class HytaleAudience extends FacetAudience<CommandSender> {
-  private static final Collection<Facet.Chat<? extends CommandSender, ?>> CHAT = Facet.of(
-      HytaleFacet.ChatPlayer::new,
-      HytaleFacet.ChatConsole::new);
-  private static final Collection<Facet.Title<PlayerRef, ?, ?, ?>> TITLE = Facet.of(
-      HytaleFacet.Title::new);
-  private static final Collection<Facet.Pointers<? extends CommandSender>> POINTERS = Facet.of(
-      HytaleFacet.CommandSenderPointers::new,
-      HytaleFacet.PlayerPointers::new);
-
-  HytaleAudience(final @NotNull HytaleAudiencesImpl provider, final @NotNull Collection<? extends CommandSender> viewers) {
-    super(provider, viewers, CHAT, null, TITLE, null, null, null, null, null, POINTERS);
-  }
-}
+import org.jetbrains.annotations.ApiStatus;

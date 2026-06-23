@@ -21,26 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package eu.mikart.adventure.platform.hytale;
+package eu.mikart.adventure.platform.hytale.facet;
 
-import com.hypixel.hytale.server.core.command.system.CommandSender;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
-import eu.mikart.adventure.platform.hytale.facet.Facet;
-import eu.mikart.adventure.platform.hytale.facet.FacetAudience;
-import java.util.Collection;
-import org.jetbrains.annotations.NotNull;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.pointer.Pointer;
+import org.jetbrains.annotations.ApiStatus;
 
-final class HytaleAudience extends FacetAudience<CommandSender> {
-  private static final Collection<Facet.Chat<? extends CommandSender, ?>> CHAT = Facet.of(
-      HytaleFacet.ChatPlayer::new,
-      HytaleFacet.ChatConsole::new);
-  private static final Collection<Facet.Title<PlayerRef, ?, ?, ?>> TITLE = Facet.of(
-      HytaleFacet.Title::new);
-  private static final Collection<Facet.Pointers<? extends CommandSender>> POINTERS = Facet.of(
-      HytaleFacet.CommandSenderPointers::new,
-      HytaleFacet.PlayerPointers::new);
+/**
+ * Pointers for facet-specific data.
+ *
+ * @since 1.1.0
+ */
+@ApiStatus.Internal
+public final class FacetPointers {
+  private FacetPointers() {
+  }
 
-  HytaleAudience(final @NotNull HytaleAudiencesImpl provider, final @NotNull Collection<? extends CommandSender> viewers) {
-    super(provider, viewers, CHAT, null, TITLE, null, null, null, null, null, POINTERS);
+  private static final String NAMESPACE = "adventure_platform";
+  public static final Pointer<String> SERVER = Pointer.pointer(String.class, Key.key(NAMESPACE, "server"));
+  public static final Pointer<Key> WORLD = Pointer.pointer(Key.class, Key.key(NAMESPACE, "world"));
+  public static final Pointer<Type> TYPE = Pointer.pointer(Type.class, Key.key(NAMESPACE, "type"));
+
+  /**
+   * Types of audience that may receive special handling.
+   *
+   * @since 1.1.0
+   */
+  public enum Type {
+    PLAYER,
+    CONSOLE,
+    OTHER
   }
 }

@@ -28,7 +28,6 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.function.Predicate;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.AudienceProvider;
 import org.jetbrains.annotations.NotNull;
 
 /**

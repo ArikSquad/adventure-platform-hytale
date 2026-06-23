@@ -33,36 +33,26 @@ import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
+import eu.mikart.adventure.platform.hytale.facet.Facet;
+import eu.mikart.adventure.platform.hytale.facet.FacetBase;
+import eu.mikart.adventure.platform.hytale.facet.FacetComponentFlattener;
+import eu.mikart.adventure.platform.hytale.facet.FacetPointers;
 import java.util.Locale;
 import java.util.UUID;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.permission.PermissionChecker;
-import net.kyori.adventure.platform.facet.Facet;
-import net.kyori.adventure.platform.facet.FacetBase;
-import net.kyori.adventure.platform.facet.FacetComponentFlattener;
-import net.kyori.adventure.platform.facet.FacetPointers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.flattener.ComponentFlattener;
 import net.kyori.adventure.util.TriState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 class HytaleFacet<V extends CommandSender> extends FacetBase<V> {
   static final ComponentFlattener FLATTENER = FacetComponentFlattener.get(HytaleServer.get(), null);
   static final HytaleComponentSerializer HYTALE = HytaleComponentSerializer.get();
 
   protected HytaleFacet(final @Nullable Class<? extends V> viewerClass) {
     super(viewerClass);
-  }
-
-  private static PlayerRef toPlayerRef(final Player player) {
-    final Ref<EntityStore> ref = player.getReference();
-    if (ref == null) {
-      throw new IllegalStateException("Player " + player + " has no reference");
-    }
-    final Store<EntityStore> store = ref.getStore();
-    return store.getComponent(ref, PlayerRef.getComponentType());
   }
 
   static class ChatConsole extends HytaleFacet<CommandSender> implements Facet.Chat<CommandSender, com.hypixel.hytale.server.core.Message> {

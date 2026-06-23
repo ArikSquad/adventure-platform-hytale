@@ -21,26 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package eu.mikart.adventure.platform.hytale;
+package eu.mikart.adventure.platform.hytale.facet;
 
-import com.hypixel.hytale.server.core.command.system.CommandSender;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
-import eu.mikart.adventure.platform.hytale.facet.Facet;
-import eu.mikart.adventure.platform.hytale.facet.FacetAudience;
-import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-final class HytaleAudience extends FacetAudience<CommandSender> {
-  private static final Collection<Facet.Chat<? extends CommandSender, ?>> CHAT = Facet.of(
-      HytaleFacet.ChatPlayer::new,
-      HytaleFacet.ChatConsole::new);
-  private static final Collection<Facet.Title<PlayerRef, ?, ?, ?>> TITLE = Facet.of(
-      HytaleFacet.Title::new);
-  private static final Collection<Facet.Pointers<? extends CommandSender>> POINTERS = Facet.of(
-      HytaleFacet.CommandSenderPointers::new,
-      HytaleFacet.PlayerPointers::new);
+/**
+ * A base implementation of a facet that validates viewer type.
+ *
+ * <p>This is not supported API. Subject to change at any time.</p>
+ *
+ * @param <V> the viewer type
+ * @since 1.1.0
+ */
+public abstract class FacetBase<V> implements Facet<V> {
+  protected final Class<? extends V> viewerClass;
 
-  HytaleAudience(final @NotNull HytaleAudiencesImpl provider, final @NotNull Collection<? extends CommandSender> viewers) {
-    super(provider, viewers, CHAT, null, TITLE, null, null, null, null, null, POINTERS);
+  protected FacetBase(final @Nullable Class<? extends V> viewerClass) {
+    this.viewerClass = viewerClass;
+  }
+
+  @Override
+  public boolean isSupported() {
+    return this.viewerClass != null;
+  }
+
+  @Override
+  public boolean isApplicable(final @NotNull V viewer) {
+    return this.viewerClass != null && this.viewerClass.isInstance(viewer);
   }
 }
