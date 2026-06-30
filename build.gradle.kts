@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    api("net.kyori:adventure-text-serializer-gson:5.1.1")
-    api("net.kyori:adventure-text-serializer-ansi:5.1.1")
+    api("net.kyori:adventure-text-serializer-gson:5.2.0")
+    api("net.kyori:adventure-text-serializer-ansi:5.2.0")
     compileOnly("com.hypixel.hytale:Server:0.5.6")
     checkstyle("ca.stellardrift:stylecheck:0.2.1")
 }
