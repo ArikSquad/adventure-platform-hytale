@@ -1,3 +1,5 @@
+
+
 # adventure-platform-hytale
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](license.txt)
@@ -7,7 +9,7 @@ Adventure platform implementation for [Hytale](https://hytale.com/).
 You may be able to refer to Adventure's platform [documentation](https://docs.papermc.io/adventure/platform/) (not affiliated) for usage and dependency information for this project and the main `adventure` library.
 
 ### Usage
-To use `adventure-platform-hytale`, include it as a dependency in your project. You need to add Jitpack as a repository to your build system. For example, in Gradle:
+To use `adventure-platform-hytale`, include it as a dependency in your project. You need to add the CodeMC repository to your build system. For example, in Gradle:
 
 ```gradle
 repositories {
