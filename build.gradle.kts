@@ -2,7 +2,7 @@ plugins {
     java
     `java-library`
     `maven-publish`
-    id("net.kyori.indra") version "4.0.0"
+    id("net.kyori.indra") version "4.1.0"
     id("net.kyori.indra.licenser.spotless") version "4.0.0"
     id("net.kyori.indra.checkstyle") version "4.0.0"
 }
